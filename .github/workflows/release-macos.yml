@@ -1,0 +1,51 @@
+name: Release macOS DMG
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build-macos:
+    name: Build Parallax.app & DMG Installer
+    runs-on: macos-14
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12 via uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          version: "latest"
+
+      - name: Install Python 3.12
+        run: uv python install 3.12
+
+      - name: Install Python Dependencies
+        run: uv pip install -e ".[dev]"
+
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Frontend Dependencies
+        working-directory: frontend
+        run: npm ci || npm install
+
+      - name: Install FFmpeg via Homebrew
+        run: brew install ffmpeg
+
+      - name: Execute DMG Build Pipeline
+        run: ./packaging/build_dmg.sh
+
+      - name: Publish GitHub Release Artifacts
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            release/Parallax-v1.0.0-macOS-arm64.dmg
+            release/SHA256SUMS.txt
+          generate_release_notes: true

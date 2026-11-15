@@ -1,0 +1,38 @@
+# Python Virtual Environments & Bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+
+# Node & Frontend Build
+node_modules/
+frontend/node_modules/
+frontend/dist/
+
+# Application Support & Local State
+data/
+*.db
+*.db-shm
+*.db-wal
+lancedb/
+raw/
+processed/
+exports/
+
+# PyInstaller & Release Artifacts
+dist/
+build/
+release/
+packaging/Parallax.iconset/
+
+# OS & Editor
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.swo
